@@ -1,0 +1,33 @@
+{
+  "name": "The Last Message",
+  "short_name": "The Last Message",
+  "description": "Journey Through History — An epic open-world game set in ancient Mecca",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0806",
+  "theme_color": "#0a0806",
+  "lang": "en",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "https://files.catbox.moe/1zb08m.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/1zb08m.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://files.catbox.moe/hzl17x.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ]
+}
