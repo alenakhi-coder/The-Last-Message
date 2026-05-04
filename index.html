@@ -30,9 +30,14 @@
 
     <!-- Fonts (non-blocking) -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet">
+    </noscript>
 </head>
 <body>
+
+<!-- FIX: site-wrap handles overflow-x clipping instead of body, preventing Android scroll freeze -->
+<div id="site-wrap">
 
     <!-- Background Slideshow -->
     <div class="bg-slideshow">
@@ -55,23 +60,25 @@
     </nav>
 
     <!-- Scroll progress bar -->
-    <div class="scroll-progress"><div class="scroll-progress__bar" id="scrollProgressBar"></div></div>
+    <div class="scroll-progress">
+        <div class="scroll-progress__bar" id="scrollProgressBar"></div>
+    </div>
 
     <!-- Overlays -->
     <div class="bg-night-overlay"></div>
     <div class="gradient-bg"></div>
-    <div class="gold-ambient" style="position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 80%);"></div>
+    <div class="gold-ambient" style="position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% 50%, rgba(201,168,76,0.03) 0%, transparent 80%);"></div>
 
     <!-- Main Navigation -->
     <nav id="navbar">
         <div class="nav-container">
             <div class="logo-wrap">
                 <img referrerpolicy="no-referrer"
-                    src="https://files.catbox.moe/1zb08m.jpg"
-                    alt="The Last Message Logo"
-                    class="nav-logo-img"
-                    decoding="async"
-                    onerror="this.src='https://i.imgur.com/bs8skllh.jpg';this.onerror=null;">
+                     src="https://files.catbox.moe/1zb08m.jpg"
+                     alt="The Last Message Logo"
+                     class="nav-logo-img"
+                     decoding="async"
+                     onerror="this.src='https://i.imgur.com/bs8skllh.jpg';this.onerror=null;">
                 <div class="logo">The Last Message</div>
             </div>
 
@@ -88,7 +95,7 @@
                 <li><a href="#faq"          class="nav-link-item">FAQ</a></li>
                 <li><a href="#community"    class="nav-link-item">Community</a></li>
                 <li><a href="#team"         class="nav-link-item">Team</a></li>
-                <li><a href="#archive-rail" onclick="closeNav()">Archive</a></li>
+                <li><a href="#archive-rail" class="nav-link-item">Archive</a></li>
             </ul>
         </div>
     </nav>
@@ -97,15 +104,16 @@
          HERO
     ══════════════════════════════ -->
     <section id="home" class="hero">
+        <div class="hero-stars"></div>
         <div class="hero-content">
             <div class="hero-logo-wrap">
                 <img referrerpolicy="no-referrer"
-                    src="https://files.catbox.moe/1zb08m.jpg"
-                    alt="The Last Message"
-                    class="hero-logo-img"
-                    decoding="async"
-                    fetchpriority="high"
-                    onerror="this.src='https://i.imgur.com/bs8skllh.jpg';this.onerror=null;">
+                     src="https://files.catbox.moe/1zb08m.jpg"
+                     alt="The Last Message"
+                     class="hero-logo-img"
+                     decoding="async"
+                     fetchpriority="high"
+                     onerror="this.src='https://i.imgur.com/bs8skllh.jpg';this.onerror=null;">
             </div>
 
             <h1>The Last Message</h1>
@@ -314,13 +322,12 @@
             <div class="community-card fade-in">
                 <div class="community-content">
                     <img src="https://static.vecteezy.com/system/resources/previews/065/386/612/non_2x/patreon-white-icon-logo-app-transparent-background-premium-social-media-design-for-digital-download-free-png.png"
-                        alt="Patreon Logo"
-                        class="community-icon"
-                        draggable="false"
-                        oncontextmenu="return false;"
-                        loading="lazy"
-                        decoding="async"
-                        style="width:100px;height:100px;object-fit:contain;filter:brightness(0) saturate(100%) invert(74%) sepia(28%) saturate(900%) hue-rotate(2deg) brightness(96%) contrast(88%);pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;">
+                         alt="Patreon Logo"
+                         class="community-icon"
+                         draggable="false"
+                         loading="lazy"
+                         decoding="async"
+                         style="width:100px;height:100px;object-fit:contain;filter:brightness(0) saturate(100%) invert(74%) sepia(28%) saturate(900%) hue-rotate(2deg) brightness(96%) contrast(88%);pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;">
                     <h3>Patreon</h3>
                     <p>Support the development of The Last Message and get exclusive behind&#8209;the&#8209;scenes access, early previews, and special rewards.</p>
                     <a href="https://www.patreon.com/TheLastMessage?utm_campaign=creatorshare_creator" class="btn btn-journey" target="_blank" rel="noopener noreferrer">Support on Patreon</a>
@@ -404,8 +411,21 @@
                     </div>
                 </a>
 
-                <a class="ac-tile fade-in" href="#" onclick="openDevlogs(); return false;">
+                <!-- NEW: Log #04 — Revelation Logs -->
+                <a class="ac-tile fade-in" href="https://www.patreon.com/posts/revelation-logs-157079855" target="_blank" rel="noopener noreferrer">
                     <div class="ac-tile__img" style="background-image:url('https://files.catbox.moe/ewccee.png');"></div>
+                    <div class="ac-tile__shade"></div>
+                    <span class="ac-tile__num">Log &middot; 04</span>
+                    <div class="ac-tile__body">
+                        <span class="ac-tile__type">Revelation Logs</span>
+                        <h3 class="ac-tile__title">Level Design &amp; Story Progress</h3>
+                        <p class="ac-tile__desc">Deep dive into level design decisions and major story progress milestones.</p>
+                        <span class="ac-tile__cta">Read on Patreon</span>
+                    </div>
+                </a>
+
+                <a class="ac-tile fade-in" href="#" onclick="openDevlogs(); return false;">
+                    <div class="ac-tile__img" style="background-image:url('https://files.catbox.moe/eecnei.png');"></div>
                     <div class="ac-tile__shade"></div>
                     <span class="ac-tile__num">View &middot; All</span>
                     <div class="ac-tile__body">
@@ -548,9 +568,9 @@
                 <a href="https://discord.gg/J5Bp77Zwpu"
                    target="_blank"
                    rel="noopener noreferrer"
-                   style="color:var(--ac-gold-light);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(201, 168, 76, 0.4);padding-bottom:1px;transition:border-color 0.3s;"
+                   style="color:var(--ac-gold-light);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:1px;transition:border-color 0.3s;"
                    onmouseover="this.style.borderColor='var(--ac-gold)'"
-                   onmouseout="this.style.borderColor='rgba(201, 168, 76, 0.4)'"
+                   onmouseout="this.style.borderColor='rgba(201,168,76,0.4)'"
                 >Join our Discord Server</a>
             </p>
         </div>
@@ -585,7 +605,6 @@
                 </a>
             </div>
 
-            <!-- Steps: both at same height, same size, same position -->
             <div class="alpha-steps">
                 <div class="alpha-step">
                     <span class="alpha-step-num">1</span>
@@ -650,11 +669,11 @@
 
             <div class="codex-illustration">
                 <img referrerpolicy="no-referrer"
-                    src="https://files.catbox.moe/u5oeyg.png"
-                    alt="Historical illustration - 7th century Arabia"
-                    loading="lazy"
-                    decoding="async"
-                    onerror="this.closest('.codex-illustration').style.display='none';">
+                     src="https://files.catbox.moe/u5oeyg.png"
+                     alt="Historical illustration - 7th century Arabia"
+                     loading="lazy"
+                     decoding="async"
+                     onerror="this.closest('.codex-illustration').style.display='none';">
                 <div class="codex-illustration-caption">Mecca &mdash; 7th Century Arabia</div>
             </div>
 
@@ -664,7 +683,7 @@
 
             <div class="codex-legend">
                 <div class="legend-item"><div class="legend-bar" style="background:var(--ac-gold);"></div><span>Prophet's Clan</span></div>
-                <div class="legend-item"><div class="legend-bar" style="background:rgba(255, 70, 40, 0.7);"></div><span>Notable Opponent</span></div>
+                <div class="legend-item"><div class="legend-bar" style="background:rgba(255,70,40,0.7);"></div><span>Notable Opponent</span></div>
                 <div class="legend-item"><div class="legend-bar" style="background:var(--ac-gold-light);"></div><span>Notable Companion</span></div>
             </div>
 
@@ -701,7 +720,7 @@
                         <tr>
                             <td>Banu Sahm</td>
                             <td><span class="clan-tag outskirts">Quraysh of the Outskirts</span></td>
-                            <td style="color:rgba(201, 168, 76, 0.38);font-style:italic;">(Not clearly documented)</td>
+                            <td style="color:rgba(201,168,76,0.38);font-style:italic;">(Not clearly documented)</td>
                         </tr>
                         <tr>
                             <td>Banu Abd al-Dar</td>
@@ -711,12 +730,12 @@
                         <tr>
                             <td>Banu Adi</td>
                             <td><span class="clan-tag outskirts">Quraysh of the Outskirts</span></td>
-                            <td style="color:rgba(201, 168, 76, 0.38);font-style:italic;">(Not clearly documented)</td>
+                            <td style="color:rgba(201,168,76,0.38);font-style:italic;">(Not clearly documented)</td>
                         </tr>
                         <tr>
                             <td>Banu Amir</td>
                             <td><span class="clan-tag outskirts">Quraysh of the Outskirts</span></td>
-                            <td style="color:rgba(201, 168, 76, 0.38);font-style:italic;">(Not clearly documented)</td>
+                            <td style="color:rgba(201,168,76,0.38);font-style:italic;">(Not clearly documented)</td>
                         </tr>
                         <tr class="clan-companion">
                             <td>Banu Zuhrah</td>
@@ -726,17 +745,17 @@
                         <tr>
                             <td>Banu Asad</td>
                             <td><span class="clan-tag hollow">Quraysh of the Hollow</span></td>
-                            <td style="color:rgba(201, 168, 76, 0.38);font-style:italic;">(Not clearly documented)</td>
+                            <td style="color:rgba(201,168,76,0.38);font-style:italic;">(Not clearly documented)</td>
                         </tr>
                         <tr class="clan-opponent">
                             <td>Banu Makhzum</td>
                             <td><span class="clan-tag hollow">Quraysh of the Hollow</span></td>
-                            <td>'Amr ibn Hisham <em>(Abu Jahl)</em><br><span style="font-size:0.64rem;color:rgba(255, 70, 40, 0.65);font-style:italic;">Chief opponent of the Prophet</span></td>
+                            <td>'Amr ibn Hisham <em>(Abu Jahl)</em><br><span style="font-size:0.64rem;color:rgba(255,70,40,0.65);font-style:italic;">Chief opponent of the Prophet</span></td>
                         </tr>
                         <tr>
                             <td>Banu al-Harith</td>
                             <td><span class="clan-tag outskirts">Quraysh of the Outskirts</span></td>
-                            <td style="color:rgba(201, 168, 76, 0.38);font-style:italic;">(Not clearly documented)</td>
+                            <td style="color:rgba(201,168,76,0.38);font-style:italic;">(Not clearly documented)</td>
                         </tr>
                         <tr>
                             <td>Banu Jumah</td>
@@ -759,13 +778,13 @@
     </div>
 
     <!-- ══════════════════════════════
-         DEVLOGS OVERLAY
+         DEVLOGS OVERLAY — Improved
     ══════════════════════════════ -->
     <div id="devlogsOverlay" class="codex-overlay" role="dialog" aria-modal="true" aria-label="Developer Logs">
-        <div class="codex-panel" style="max-width:900px;margin:0 auto;padding:16px;background:transparent;">
-            <button class="codex-close-btn" onclick="closeDevlogs()" aria-label="Close Developer Logs" style="position:absolute;top:12px;right:12px;">&times;</button>
+        <div class="codex-panel" style="max-width:860px;">
+            <button class="codex-close-btn" onclick="closeDevlogs()" aria-label="Close Developer Logs">&times;</button>
 
-            <div class="codex-header" style="text-align:center;margin-bottom:20px;">
+            <div class="codex-header" style="margin-bottom:1.8rem;">
                 <div class="codex-header-ornament">
                     <span class="cho-line"></span>
                     <span class="cho-diamond">&#9670;</span>
@@ -773,69 +792,83 @@
                     <span class="cho-diamond">&#9670;</span>
                     <span class="cho-line r"></span>
                 </div>
-                <div class="codex-badge" style="margin:8px 0;">Behind the Scenes &mdash; Progress Reports</div>
-                <h2 class="codex-main-title" style="margin:4px 0;">DEVELOPER LOGS</h2>
-                <p class="codex-sub-title" style="margin:4px 0;">Updates from the Team &mdash; The Last Message</p>
+                <div class="codex-badge">Behind the Scenes &mdash; Progress Reports</div>
+                <h2 class="codex-main-title">DEVELOPER LOGS</h2>
+                <p class="codex-sub-title">Updates from the Team &mdash; The Last Message</p>
             </div>
 
-            <p class="codex-intro-text" style="margin-bottom:16px;line-height:1.5;">
+            <p class="codex-intro-text">
                 Follow the ongoing journey of building <strong style="color:var(--ac-gold-light);">The Last Message</strong>. These developer logs document real milestones, progress updates, and notes straight from the development team &mdash; posted on Patreon.
             </p>
 
-            <div class="devlog-grid" style="display:flex;flex-direction:column;gap:18px;">
-                <div class="devlog-card" style="display:flex;flex-direction:column;gap:8px;border-radius:10px;overflow:hidden;">
-                    <div class="devlog-img-wrap" style="width:100%;height:auto;position:relative;">
-                        <img src="https://files.catbox.moe/sek4x7.png" alt="Devlog - Massive Update" loading="lazy" decoding="async"
-                             style="width:100%;height:auto;max-height:220px;object-fit:cover;display:block;border-radius:10px;">
-                        <span class="devlog-num-badge" style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);color:var(--ac-accent-light);padding:0.25rem 0.5rem;border-radius:999px;font-size:0.75rem;font-weight:700;">Log #01</span>
+            <div class="devlog-grid">
+
+                <!-- Log #01 -->
+                <div class="devlog-card">
+                    <div class="devlog-img-wrap">
+                        <img src="https://files.catbox.moe/sek4x7.png" alt="Devlog - Massive Update" loading="lazy" decoding="async">
+                        <span class="devlog-num-badge">Log #01</span>
                     </div>
-                    <div class="devlog-card-body" style="display:flex;flex-direction:column;justify-content:center;padding:8px;">
-                        <span class="devlog-card-type" style="font-size:0.85rem;opacity:0.85;">Devlog</span>
-                        <div class="devlog-card-title" style="font-size:1rem;font-weight:600;margin:2px 0;">Massive Update</div>
-                        <p class="devlog-card-desc" style="font-size:0.88rem;line-height:1.4;margin:4px 0;">A significant milestone in The Last Message development &mdash; covering major new features, environments, and systems added to the game.</p>
+                    <div class="devlog-card-body">
+                        <span class="devlog-card-type">Devlog</span>
+                        <div class="devlog-card-title">Massive Update</div>
+                        <p class="devlog-card-desc">A significant milestone in The Last Message development &mdash; covering major new features, environments, and systems added to the game.</p>
                         <a href="https://www.patreon.com/posts/devlog-massive-153731274?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link"
-                           class="devlog-open-link" target="_blank" rel="noopener noreferrer"
-                           style="font-size:0.88rem;color:var(--ac-gold-light);text-decoration:none;">Click to Open</a>
+                           class="devlog-open-link" target="_blank" rel="noopener noreferrer">Read on Patreon</a>
                     </div>
                 </div>
 
-                <div class="devlog-card" style="display:flex;flex-direction:column;gap:8px;border-radius:10px;overflow:hidden;">
-                    <div class="devlog-img-wrap" style="width:100%;height:auto;position:relative;">
-                        <img src="https://files.catbox.moe/gyirfh.png" alt="Devlog - Weekly Update" loading="lazy" decoding="async"
-                             style="width:100%;height:auto;max-height:220px;object-fit:cover;display:block;border-radius:10px;">
-                        <span class="devlog-num-badge" style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);color:var(--ac-accent-light);padding:0.25rem 0.5rem;border-radius:999px;font-size:0.75rem;font-weight:700;">Log #02</span>
+                <!-- Log #02 -->
+                <div class="devlog-card">
+                    <div class="devlog-img-wrap">
+                        <img src="https://files.catbox.moe/gyirfh.png" alt="Devlog - Weekly Update" loading="lazy" decoding="async">
+                        <span class="devlog-num-badge">Log #02</span>
                     </div>
-                    <div class="devlog-card-body" style="display:flex;flex-direction:column;justify-content:center;padding:8px;">
-                        <span class="devlog-card-type" style="font-size:0.85rem;opacity:0.85;">Weekly Devlog</span>
-                        <div class="devlog-card-title" style="font-size:1rem;font-weight:600;margin:2px 0;">Weekly Update</div>
-                        <p class="devlog-card-desc" style="font-size:0.88rem;line-height:1.4;margin:4px 0;">A weekly progress report from the team &mdash; tracking what was built, refined, and improved during that week of active development.</p>
+                    <div class="devlog-card-body">
+                        <span class="devlog-card-type">Weekly Devlog</span>
+                        <div class="devlog-card-title">Weekly Update</div>
+                        <p class="devlog-card-desc">A weekly progress report from the team &mdash; tracking what was built, refined, and improved during that week of active development.</p>
                         <a href="https://www.patreon.com/posts/devlog-weekly-148532621?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link"
-                           class="devlog-open-link" target="_blank" rel="noopener noreferrer"
-                           style="font-size:0.88rem;color:var(--ac-gold-light);text-decoration:none;">Click to Open</a>
+                           class="devlog-open-link" target="_blank" rel="noopener noreferrer">Read on Patreon</a>
                     </div>
                 </div>
 
-                <div class="devlog-card" style="display:flex;flex-direction:column;gap:8px;border-radius:10px;overflow:hidden;">
-                    <div class="devlog-img-wrap" style="width:100%;height:auto;position:relative;">
-                        <img src="https://files.catbox.moe/6etgmn.png" alt="Dev Note - Alpha" loading="lazy" decoding="async"
-                             style="width:100%;height:auto;max-height:220px;object-fit:cover;display:block;border-radius:10px;">
-                        <span class="devlog-num-badge" style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);color:var(--ac-accent-light);padding:0.25rem 0.5rem;border-radius:999px;font-size:0.75rem;font-weight:700;">Log #03</span>
+                <!-- Log #03 -->
+                <div class="devlog-card">
+                    <div class="devlog-img-wrap">
+                        <img src="https://files.catbox.moe/6etgmn.png" alt="Dev Note - Alpha" loading="lazy" decoding="async">
+                        <span class="devlog-num-badge">Log #03</span>
                     </div>
-                    <div class="devlog-card-body" style="display:flex;flex-direction:column;justify-content:center;padding:8px;">
-                        <span class="devlog-card-type" style="font-size:0.85rem;opacity:0.85;">Dev Note</span>
-                        <div class="devlog-card-title" style="font-size:1rem;font-weight:600;margin:2px 0;">Alpha Dev Note</div>
-                        <p class="devlog-card-desc" style="font-size:0.88rem;line-height:1.4;margin:4px 0;">An important developer note regarding the Alpha phase &mdash; sharing insights on the current state of the game and the road ahead.</p>
+                    <div class="devlog-card-body">
+                        <span class="devlog-card-type">Dev Note</span>
+                        <div class="devlog-card-title">Alpha Dev Note</div>
+                        <p class="devlog-card-desc">An important developer note regarding the Alpha phase &mdash; sharing insights on the current state of the game and the road ahead.</p>
                         <a href="https://www.patreon.com/posts/dev-note-alpha-152999843?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link"
-                           class="devlog-open-link" target="_blank" rel="noopener noreferrer"
-                           style="font-size:0.88rem;color:var(--ac-gold-light);text-decoration:none;">Click to Open</a>
+                           class="devlog-open-link" target="_blank" rel="noopener noreferrer">Read on Patreon</a>
                     </div>
                 </div>
+
+                <!-- Log #04 — NEW -->
+                <div class="devlog-card">
+                    <div class="devlog-img-wrap">
+                        <img src="https://files.catbox.moe/ewccee.png" alt="Revelation Logs #04 - Level Design & Story Progress" loading="lazy" decoding="async">
+                        <span class="devlog-num-badge">Log #04</span>
+                    </div>
+                    <div class="devlog-card-body">
+                        <span class="devlog-card-type">Revelation Logs</span>
+                        <div class="devlog-card-title">Level Design &amp; Story Progress</div>
+                        <p class="devlog-card-desc">A deep dive into level design decisions and major story milestones &mdash; covering new environments, quest structures, and narrative developments in the latest build.</p>
+                        <a href="https://www.patreon.com/posts/revelation-logs-157079855?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link"
+                           class="devlog-open-link" target="_blank" rel="noopener noreferrer">Read on Patreon</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <!-- ══════════════════════════════
-         HOME SCREEN POPUP
+         HOME SCREEN POPUP (PWA)
     ══════════════════════════════ -->
     <div id="hsPopup" class="hs-popup" role="dialog" aria-label="Add to Home Screen">
         <div class="hs-popup-frame">
@@ -875,9 +908,10 @@
         </div>
     </div>
 
-    <!-- Script (loaded last for best performance) -->
-    <script src="script.js"></script>
+</div><!-- /#site-wrap -->
+
+<!-- Script (loaded last for best performance) -->
+<script src="script.js"></script>
 
 </body>
 </html>
-
