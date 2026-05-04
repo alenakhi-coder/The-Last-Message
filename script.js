@@ -1,44 +1,71 @@
-// service worker
+
+// =========================================================
+// THE LAST MESSAGE — script.js
+// =========================================================
+
+// ---- Service Worker (PWA) ----
+// FIX: safer registration with proper error handling to prevent PWA freeze
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/serviceworker.js').catch(function () {});
+        navigator.serviceWorker.register('/serviceworker.js')
+            .then(function (reg) {
+                // Service worker registered successfully
+                console.log('SW registered:', reg.scope);
+            })
+            .catch(function (err) {
+                // Fail silently — page still works without SW
+                console.log('SW registration skipped:', err.message);
+            });
     });
 }
 
-// zoom detection
+// ---- Zoom detection (no body overflow changes) ----
 (function () {
     var vv = window.visualViewport;
     if (!vv) return;
     var timer = null;
-    function check() {
-        var s = vv.scale;
-        document.body.classList.toggle('zoom-extreme', s > 2.5 || s < 0.9);
+
+    function checkZoom() {
+        var scale = vv.scale;
+        document.body.classList.toggle('zoom-extreme', scale > 2.5 || scale < 0.9);
     }
+
     vv.addEventListener('resize', function () {
         clearTimeout(timer);
-        timer = setTimeout(check, 80);
+        timer = setTimeout(checkZoom, 80);
     });
 })();
 
-// body reveal
+// ---- Body reveal ----
+// FIX: reveal as early as possible to prevent "frozen" appearance
 function revealBody() {
     document.body.style.transition = 'opacity 0.5s ease';
-    document.body.style.opacity   = '1';
+    document.body.style.opacity = '1';
 }
-window.addEventListener('load',             function () { setTimeout(revealBody, 80); });
-window.addEventListener('pageshow',         function (e) { if (e.persisted) revealBody(); });
-document.addEventListener('visibilitychange', function () { if (!document.hidden) revealBody(); });
-window.addEventListener('focus',            revealBody);
-window.addEventListener('orientationchange', function () { setTimeout(revealBody, 150); });
-setTimeout(revealBody, 2500);
 
-// navbar scroll style
+// Reveal on DOMContentLoaded first (fastest)
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(revealBody, 60);
+});
+
+// Additional safety nets
+window.addEventListener('load',              function () { setTimeout(revealBody, 80); });
+window.addEventListener('pageshow',          function (e) { if (e.persisted) revealBody(); });
+document.addEventListener('visibilitychange', function () { if (!document.hidden) revealBody(); });
+window.addEventListener('focus', revealBody);
+window.addEventListener('orientationchange', function () { setTimeout(revealBody, 150); });
+
+// Final fallback — if nothing fires, reveal after 1.5s
+setTimeout(revealBody, 1500);
+
+// ---- Navbar scroll style ----
 var navbar = document.getElementById('navbar');
+
 window.addEventListener('scroll', function () {
     navbar.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
 
-// navbar toggle
+// ---- Navbar mobile toggle ----
 var navToggle = document.getElementById('navToggle');
 var navLinks  = document.getElementById('navLinks');
 
@@ -46,38 +73,41 @@ function closeNav() {
     navLinks.classList.remove('open');
     navToggle.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
-    // no body overflow manipulation here — avoids Android scroll freeze
 }
 
 navToggle.addEventListener('click', function () {
     var isOpen = navLinks.classList.toggle('open');
     navToggle.classList.toggle('open', isOpen);
     navToggle.setAttribute('aria-expanded', String(isOpen));
-    // nav uses position:fixed so body overflow isn't needed
 });
 
+// Close nav when any link is clicked
 document.querySelectorAll('.nav-link-item').forEach(function (link) {
     link.addEventListener('click', closeNav);
 });
 
+// Close nav when clicking outside
 document.addEventListener('click', function (e) {
     if (!navbar.contains(e.target)) closeNav();
 });
 
+// Close nav on resize to desktop
 window.addEventListener('resize', function () {
     if (window.innerWidth > 768) closeNav();
 });
 
-// faq accordion
+// ---- FAQ accordion ----
 document.querySelectorAll('.faq-item').forEach(function (item) {
     item.querySelector('.faq-question').addEventListener('click', function () {
         var wasActive = item.classList.contains('active');
-        document.querySelectorAll('.faq-item').forEach(function (f) { f.classList.remove('active'); });
+        document.querySelectorAll('.faq-item').forEach(function (f) {
+            f.classList.remove('active');
+        });
         if (!wasActive) item.classList.add('active');
     });
 });
 
-// fade-in observer
+// ---- Fade-in on scroll (IntersectionObserver) ----
 var fadeObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -88,7 +118,9 @@ var fadeObserver = new IntersectionObserver(function (entries) {
 }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
 function registerFadeIns() {
-    document.querySelectorAll('.fade-in').forEach(function (el) { fadeObserver.observe(el); });
+    document.querySelectorAll('.fade-in').forEach(function (el) {
+        fadeObserver.observe(el);
+    });
 }
 
 if ('requestIdleCallback' in window) {
@@ -97,11 +129,11 @@ if ('requestIdleCallback' in window) {
     setTimeout(registerFadeIns, 200);
 }
 
-// smooth scroll for anchor links
+// ---- Smooth scroll for anchor links ----
 document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
         var href = this.getAttribute('href');
-        if (href.length > 1) {
+        if (href && href.length > 1) {
             e.preventDefault();
             var target = document.querySelector(href);
             if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -109,31 +141,46 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     });
 });
 
-// hero fade on scroll + scroll indicator
+// ---- Hero content fade on scroll + scroll indicator ----
 window.addEventListener('scroll', function () {
     var hero = document.querySelector('.hero-content');
-    if (hero) hero.style.opacity = Math.max(0, 1 - window.pageYOffset / 600);
+    if (hero) {
+        hero.style.opacity = Math.max(0, 1 - window.pageYOffset / 600);
+    }
+
     var indicator = document.querySelector('.scroll-indicator');
-    if (indicator) indicator.style.opacity = window.scrollY > 100 ? '0' : '1';
+    if (indicator) {
+        indicator.style.opacity = window.scrollY > 100 ? '0' : '1';
+    }
 }, { passive: true });
 
-// cursor gold dust trail (desktop only)
+// ---- Cursor gold dust trail (desktop only, throttled) ----
 var trailPending = false;
 var dotCount     = 0;
 var MAX_DOTS     = 12;
+
 document.addEventListener('mousemove', function (e) {
-    if (window.innerWidth <= 768 || trailPending || dotCount >= MAX_DOTS) return;
+    if (window.innerWidth <= 768) return;
+    if (trailPending || dotCount >= MAX_DOTS) return;
+
     trailPending = true;
     requestAnimationFrame(function () {
         trailPending = false;
+
         var dot = document.createElement('div');
         dot.style.cssText =
             'position:fixed;width:4px;height:4px;border-radius:50%;' +
             'background:rgba(201,168,76,0.32);left:' + e.clientX + 'px;top:' + e.clientY + 'px;' +
             'pointer-events:none;z-index:9999;transition:opacity 0.5s ease,transform 0.5s ease;';
+
         document.body.appendChild(dot);
         dotCount++;
-        requestAnimationFrame(function () { dot.style.opacity = '0'; dot.style.transform = 'scale(3)'; });
+
+        requestAnimationFrame(function () {
+            dot.style.opacity = '0';
+            dot.style.transform = 'scale(3)';
+        });
+
         setTimeout(function () {
             if (dot.parentNode) dot.parentNode.removeChild(dot);
             dotCount--;
@@ -141,28 +188,31 @@ document.addEventListener('mousemove', function (e) {
     });
 });
 
-// background slideshow — preload all images immediately for smooth transitions
+// ---- Background slideshow ----
 (function () {
-    var slides  = Array.from(document.querySelectorAll('.bg-slide'));
-    var loaded  = slides.map(function (s, i) { return i === 0; });
+    var slides   = Array.from(document.querySelectorAll('.bg-slide'));
+    var loaded   = slides.map(function (_, i) { return i === 0; });
     var sections = ['home', 'trailer', 'story', 'faq', 'community', 'team'];
     var offsets  = [];
     var current  = 0;
 
-    function load(idx) {
+    // Load a slide's background image
+    function loadSlide(idx) {
         if (loaded[idx]) return;
         loaded[idx] = true;
+
         var bg = slides[idx].getAttribute('data-bg');
         if (!bg) return;
+
         var img = new Image();
         img.onload  = function () { slides[idx].style.backgroundImage = "url('" + bg + "')"; };
         img.onerror = function () {};
         img.src = bg;
     }
 
-    // preload all on idle
+    // Preload all slides when the browser is idle
     function preloadAll() {
-        slides.forEach(function (_, i) { if (i > 0) load(i); });
+        slides.forEach(function (_, i) { if (i > 0) loadSlide(i); });
     }
 
     if ('requestIdleCallback' in window) {
@@ -171,6 +221,7 @@ document.addEventListener('mousemove', function (e) {
         setTimeout(preloadAll, 1200);
     }
 
+    // Calculate section offsets
     function buildOffsets() {
         offsets = sections
             .map(function (id) { return document.getElementById(id); })
@@ -178,21 +229,28 @@ document.addEventListener('mousemove', function (e) {
             .map(function (el) { return el.getBoundingClientRect().top + window.scrollY; });
     }
 
+    // Determine which slide to show based on scroll position
     function indexFor() {
         var trigger = window.scrollY + window.innerHeight * 0.3;
         var idx = 0;
         offsets.forEach(function (top, i) {
-            if (trigger >= top) idx = Math.min(Math.floor(i * slides.length / sections.length), slides.length - 1);
+            if (trigger >= top) {
+                idx = Math.min(Math.floor(i * slides.length / sections.length), slides.length - 1);
+            }
         });
         return idx;
     }
 
+    // Switch to correct slide
     function update() {
         var next = indexFor();
         if (next === current) return;
-        load(next);
+
+        loadSlide(next);
         current = next;
-        slides.forEach(function (s, i) { s.classList.toggle('active', i === next); });
+        slides.forEach(function (s, i) {
+            s.classList.toggle('active', i === next);
+        });
     }
 
     slides[0].classList.add('active');
@@ -202,12 +260,11 @@ document.addEventListener('mousemove', function (e) {
     window.addEventListener('load',   function () { buildOffsets(); update(); });
 })();
 
-// codex overlay
+// ---- Codex overlay ----
 function openCodex() {
     var overlay = document.getElementById('codexOverlay');
     overlay.classList.add('open');
     overlay.scrollTop = 0;
-    // no body overflow manipulation — overlay is position:fixed, handles its own scroll
 }
 
 function closeCodex() {
@@ -218,7 +275,7 @@ document.getElementById('codexOverlay').addEventListener('click', function (e) {
     if (e.target === this) closeCodex();
 });
 
-// devlogs overlay
+// ---- Devlogs overlay ----
 function openDevlogs() {
     var overlay = document.getElementById('devlogsOverlay');
     overlay.classList.add('open');
@@ -233,26 +290,36 @@ document.getElementById('devlogsOverlay').addEventListener('click', function (e)
     if (e.target === this) closeDevlogs();
 });
 
-// keyboard close
+// Close overlays with Escape key
 document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { closeCodex(); closeDevlogs(); }
+    if (e.key === 'Escape') {
+        closeCodex();
+        closeDevlogs();
+    }
 });
 
-// home screen popup
+// ---- Home screen PWA popup ----
 function dismissHsPopup() {
     var popup = document.getElementById('hsPopup');
-    if (popup) {
-        popup.style.transition = 'bottom 0.45s cubic-bezier(0.4,0,1,1)';
-        popup.classList.remove('show');
-    }
+    if (!popup) return;
+    popup.style.transition = 'bottom 0.45s cubic-bezier(0.4, 0, 1, 1)';
+    popup.classList.remove('show');
+
+    // Remember dismissal so it doesn't show again this session
+    try { sessionStorage.setItem('hs_dismissed', '1'); } catch (e) {}
 }
 
 (function () {
+    // Don't show if dismissed this session
+    try { if (sessionStorage.getItem('hs_dismissed')) return; } catch (e) {}
+
     var ua       = navigator.userAgent;
     var platform = null;
+
     if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) platform = 'ios';
     else if (/Android/.test(ua))                          platform = 'android';
 
+    // Only show on mobile and only if not already installed as PWA
     if (!platform) return;
     if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return;
     if (window.navigator.standalone === true) return;
@@ -278,89 +345,120 @@ function dismissHsPopup() {
             '3. Tap <strong>Add</strong> to confirm';
     }
 
-    // show after delay — no body overflow lock (causes Android freeze)
+    // Show popup after a short delay
     setTimeout(function () {
         if (popup) popup.classList.add('show');
-    }, 2000);
+    }, 3000);
 })();
 
-// scroll progress bar
+// ---- Scroll progress bar ----
 (function () {
-    var bar = document.getElementById('scrollProgressBar');
+    var bar     = document.getElementById('scrollProgressBar');
     if (!bar) return;
     var ticking = false;
-    function update() {
+
+    function updateBar() {
         var h   = document.documentElement;
         var max = (h.scrollHeight - h.clientHeight) || 1;
-        bar.style.width = Math.min(100, Math.max(0, (h.scrollTop / max) * 100)) + '%';
+        var pct = Math.min(100, Math.max(0, (h.scrollTop / max) * 100));
+        bar.style.width = pct + '%';
         ticking = false;
     }
+
     window.addEventListener('scroll', function () {
-        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+        if (!ticking) {
+            requestAnimationFrame(updateBar);
+            ticking = true;
+        }
     }, { passive: true });
-    update();
+
+    updateBar();
 })();
 
-// archive rail — drag and arrow buttons
+// ---- Archive rail — arrow buttons & drag to scroll ----
 (function () {
-    // arrow buttons for any ac-rail-track
+    // Arrow button navigation
     document.querySelectorAll('.ac-rail-prev, .ac-rail-next').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var track = document.getElementById(btn.dataset.target);
             if (!track) return;
-            var first = track.querySelector('.ac-tile');
-            var step  = first ? first.getBoundingClientRect().width + 20 : track.clientWidth * 0.8;
-            track.scrollBy({ left: btn.classList.contains('ac-rail-next') ? step : -step, behavior: 'smooth' });
+
+            var firstTile = track.querySelector('.ac-tile');
+            var step = firstTile
+                ? firstTile.getBoundingClientRect().width + 20
+                : track.clientWidth * 0.8;
+
+            track.scrollBy({
+                left: btn.classList.contains('ac-rail-next') ? step : -step,
+                behavior: 'smooth'
+            });
         });
     });
 
-    // drag-to-scroll for every ac-rail-track
+    // Mouse drag to scroll for every rail track
     document.querySelectorAll('.ac-rail-track').forEach(function (track) {
-        var down = false, sx = 0, ss = 0, moved = 0;
+        var isDown   = false;
+        var startX   = 0;
+        var startLeft = 0;
+        var moved    = 0;
 
         track.addEventListener('mousedown', function (e) {
-            down = true; moved = 0; sx = e.pageX; ss = track.scrollLeft;
+            isDown    = true;
+            moved     = 0;
+            startX    = e.pageX;
+            startLeft = track.scrollLeft;
             track.classList.add('is-dragging');
         });
 
         window.addEventListener('mouseup', function () {
-            down = false;
+            isDown = false;
             track.classList.remove('is-dragging');
         });
 
         window.addEventListener('mousemove', function (e) {
-            if (!down) return;
-            e.preventDefault();
-            var dx = e.pageX - sx;
+            if (!isDown) return;
+            // Only use e.preventDefault when actively dragging the rail
+            // to avoid blocking other page scroll behavior
+            var dx = e.pageX - startX;
             moved = Math.max(moved, Math.abs(dx));
-            track.scrollLeft = ss - dx;
+            track.scrollLeft = startLeft - dx;
         });
 
+        // Prevent click-through after dragging
         track.addEventListener('click', function (e) {
-            if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
+            if (moved > 6) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
         }, true);
     });
 })();
 
-// hud active section dots
+// ---- HUD side nav — highlight active section ----
 (function () {
     var dots = document.querySelectorAll('nav.ac-hud a');
     if (!dots.length) return;
+
     var ids      = Array.prototype.map.call(dots, function (a) { return a.getAttribute('href').slice(1); });
     var sections = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
 
-    function onScroll() {
+    function highlightActive() {
         var y       = window.scrollY + window.innerHeight * 0.35;
         var current = sections[0];
+
         for (var i = 0; i < sections.length; i++) {
-            if (sections[i] && sections[i].offsetTop <= y) current = sections[i];
+            if (sections[i] && sections[i].offsetTop <= y) {
+                current = sections[i];
+            }
         }
-        dots.forEach(function (d) {
-            d.classList.toggle('active', d.getAttribute('href') === '#' + (current && current.id));
+
+        dots.forEach(function (dot) {
+            dot.classList.toggle('active', dot.getAttribute('href') === '#' + (current && current.id));
         });
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    onScroll();
+    window.addEventListener('scroll', highlightActive, { passive: true });
+    window.addEventListener('resize', highlightActive);
+    highlightActive();
 })();
+
