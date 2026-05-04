@@ -1,31 +1,72 @@
-const CACHE = 'tlm-cache-v1';
-const CORE = ['/', '/index.html', '/styles.css', '/script.js', '/manifest.json'];
 
-self.addEventListener('install', e => {
-    e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)));
+// =========================================================
+// THE LAST MESSAGE — serviceworker.js
+// Minimal service worker — caches key assets for offline use
+// FIX: proper SW prevents PWA freeze on reopen
+// =========================================================
+
+var CACHE_NAME = 'tlm-cache-v1';
+
+var PRECACHE_ASSETS = [
+    '/',
+    '/index.html',
+    '/styles.css',
+    '/script.js'
+];
+
+// Install — cache core assets
+self.addEventListener('install', function (event) {
     self.skipWaiting();
-});
-
-self.addEventListener('activate', e => {
-    e.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-        )
-    );
-    self.clients.claim();
-});
-
-self.addEventListener('fetch', e => {
-    if (e.request.method !== 'GET') return;
-    e.respondWith(
-        caches.match(e.request).then(cached => {
-            if (cached) return cached;
-            return fetch(e.request).then(res => {
-                if (!res || res.status !== 200 || res.type === 'opaque') return res;
-                const clone = res.clone();
-                caches.open(CACHE).then(c => c.put(e.request, clone));
-                return res;
-            }).catch(() => cached);
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(function (cache) {
+            return cache.addAll(PRECACHE_ASSETS).catch(function () {
+                // If any asset fails to cache, continue anyway
+            });
         })
+    );
+});
+
+// Activate — clean up old caches
+self.addEventListener('activate', function (event) {
+    event.waitUntil(
+        caches.keys().then(function (keys) {
+            return Promise.all(
+                keys.filter(function (key) { return key !== CACHE_NAME; })
+                    .map(function (key) { return caches.delete(key); })
+            );
+        }).then(function () {
+            return self.clients.claim();
+        })
+    );
+});
+
+// Fetch — network first, fall back to cache
+self.addEventListener('fetch', function (event) {
+    // Only handle GET requests for same-origin or cached assets
+    if (event.request.method !== 'GET') return;
+
+    var url = new URL(event.request.url);
+
+    // Skip cross-origin requests (YouTube, Google Fonts, Catbox, etc.)
+    if (url.origin !== self.location.origin) return;
+
+    event.respondWith(
+        fetch(event.request)
+            .then(function (networkResponse) {
+                // Cache a copy of fresh responses
+                if (networkResponse.ok) {
+                    var clone = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(function (cache) {
+                        cache.put(event.request, clone);
+                    });
+                }
+                return networkResponse;
+            })
+            .catch(function () {
+                // Network failed — try cache
+                return caches.match(event.request).then(function (cached) {
+                    return cached || new Response('Offline', { status: 503 });
+                });
+            })
     );
 });
