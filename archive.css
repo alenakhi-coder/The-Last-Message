@@ -1,0 +1,237 @@
+/* archive.css - the horizontal scrolling archive rail */
+
+.ac-rail-section {
+    padding: 4.5rem 0 5rem;
+    position: relative;
+}
+
+/* header above the rail - title on left, arrows on right */
+.ac-rail-header {
+    max-width: 1400px;
+    margin: 0 auto 1.6rem;
+    padding: 0 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.ac-rail-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 1.5px;
+    line-height: 1.1;
+    margin: 0.3rem 0 0.4rem;
+}
+.ac-rail-title em {
+    font-style: normal;
+    background: linear-gradient(120deg, var(--ac-gold-light), var(--ac-gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.ac-rail-sub {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    max-width: 520px;
+    line-height: 1.6;
+}
+
+/* prev/next arrow buttons */
+.rail-controls { display: flex; gap: 0.6rem; }
+.rail-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--ac-gold-light);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), background 0.3s, border-color 0.3s, opacity 0.3s;
+}
+.rail-btn:hover {
+    background: rgba(201,168,76,0.18);
+    border-color: var(--ac-gold-light);
+    transform: scale(1.08);
+}
+.rail-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+/* wrapper that hides overflow and adds fade edges */
+.ac-rail-track-wrap {
+    position: relative;
+    padding: 0.4rem 0 1rem;
+    overflow: hidden;
+}
+.ac-rail-track-wrap::before,
+.ac-rail-track-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    pointer-events: none;
+    z-index: 3;
+}
+.ac-rail-track-wrap::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg-dark), transparent);
+}
+.ac-rail-track-wrap::after {
+    right: 0;
+    background: linear-gradient(-90deg, var(--bg-dark), transparent);
+}
+
+/* the actual scrollable row of cards */
+.ac-rail-track {
+    display: flex;
+    gap: 1.3rem;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 2rem;
+    padding: 0.3rem 2rem 1.2rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201,168,76,0.3) transparent;
+    scroll-behavior: smooth;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+.ac-rail-track::-webkit-scrollbar { height: 4px; }
+.ac-rail-track::-webkit-scrollbar-track { background: transparent; }
+.ac-rail-track::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+.ac-rail-track.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+
+/* individual archive tile/card */
+.ac-tile {
+    flex: 0 0 clamp(260px, 28vw, 340px);
+    scroll-snap-align: start;
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #14110a, #0a0806);
+    border: 1px solid rgba(201,168,76,0.18);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.55s cubic-bezier(0.22,1,0.36,1), border-color 0.4s, box-shadow 0.55s;
+    isolation: isolate;
+    cursor: pointer;
+}
+
+/* background image layer */
+.ac-tile__img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.04);
+    transition: transform 1s cubic-bezier(0.22,1,0.36,1), filter 0.5s;
+    filter: saturate(0.85) brightness(0.7);
+}
+
+/* dark gradient at the bottom of each tile */
+.ac-tile__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,8,6,0) 25%, rgba(10,8,6,0.45) 55%, rgba(10,8,6,0.96) 100%);
+}
+
+/* volume/log number badge top-left */
+.ac-tile__num {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0.32rem 0.7rem;
+    background: rgba(10,8,6,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--ac-gold-light);
+    border-radius: 999px;
+    z-index: 2;
+}
+
+/* text content at the bottom of the tile */
+.ac-tile__body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.4rem 1.4rem 1.5rem;
+    z-index: 2;
+}
+.ac-tile__type {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    color: var(--ac-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.45rem;
+    display: block;
+}
+.ac-tile__title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* description - hidden by default, shown on hover */
+.ac-tile__desc {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.4s, margin 0.55s;
+    margin-bottom: 0;
+}
+
+/* the pill CTA link at the bottom of each tile */
+.ac-tile__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ac-gold-light);
+    padding: 0.55rem 0.9rem;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 999px;
+    background: rgba(201,168,76,0.08);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+}
+.ac-tile__cta::after { content: '\2192'; transition: transform 0.3s; }
+
+/* tile hover effects */
+.ac-tile:hover {
+    transform: translateY(-6px);
+    border-color: rgba(201,168,76,0.5);
+    box-shadow: 0 24px 50px rgba(0,0,0,0.55), 0 0 50px rgba(201,168,76,0.16);
+}
+.ac-tile:hover .ac-tile__img { transform: scale(1.12); filter: saturate(1.05) brightness(0.85); }
+.ac-tile:hover .ac-tile__desc { max-height: 100px; opacity: 1; margin-bottom: 0.9rem; }
+.ac-tile:hover .ac-tile__cta { background: rgba(201,168,76,0.18); border-color: var(--ac-gold-light); transform: translateY(-2px); }
+.ac-tile:hover .ac-tile__cta::after { transform: translateX(4px); }
