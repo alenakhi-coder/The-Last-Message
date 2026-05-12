@@ -5,57 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0">
     <title>The Last Message - Journey Through History</title>
 
-    <!-- favicon only, no PWA manifest -->
     <link rel="icon" href="https://files.catbox.moe/1zb08m.jpg" type="image/jpeg">
 
-    <!-- dns prefetch for faster image loads -->
     <link rel="dns-prefetch" href="https://files.catbox.moe">
     <link rel="preconnect" href="https://files.catbox.moe" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.youtube.com">
 
-    <!-- preload the two hero images so they appear fast -->
     <link rel="preload" as="image" href="https://files.catbox.moe/hzl17x.png" fetchpriority="high">
     <link rel="preload" as="image" href="https://files.catbox.moe/1zb08m.jpg" fetchpriority="high">
 
-    <!-- google fonts - loaded async so they don't block render -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
 
-    <!-- all the stylesheets split by section -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/loader.css">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/hero.css">
-    <link rel="stylesheet" href="css/buttons.css">
-    <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/story.css">
-    <link rel="stylesheet" href="css/faq.css">
-    <link rel="stylesheet" href="css/community.css">
-    <link rel="stylesheet" href="css/archive.css">
-    <link rel="stylesheet" href="css/team.css">
-    <link rel="stylesheet" href="css/alpha.css">
-    <link rel="stylesheet" href="css/trailer.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/overlays.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- loading screen - shown until page is ready -->
+<!-- Loading Screen -->
 <div id="page-loader">
     <img src="https://files.catbox.moe/1zb08m.jpg" alt="The Last Message" class="loader-logo" decoding="async">
-    <div class="loader-bar-wrap">
-        <div class="loader-bar" id="loaderBar"></div>
-    </div>
+    <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
     <div class="loader-text" id="loaderText">Loading...</div>
 </div>
 
 <div id="site-wrap">
 
-    <!-- background slideshow images (fixed behind everything) -->
+    <!-- Background Slideshow -->
     <div class="bg-slideshow">
         <div class="bg-slide active" style="background-image:url('https://files.catbox.moe/hzl17x.png')"></div>
         <div class="bg-slide" data-bg="https://files.catbox.moe/ewccee.png"></div>
@@ -63,7 +40,7 @@
         <div class="bg-slide" data-bg="https://files.catbox.moe/01b0ls.png"></div>
     </div>
 
-    <!-- side nav dots - tells you which section you're on -->
+    <!-- HUD side nav -->
     <nav class="ac-hud" aria-label="Chapter navigation">
         <a href="#home"         data-label="Home"></a>
         <a href="#trailer"      data-label="Trailer"></a>
@@ -75,15 +52,14 @@
         <a href="#alpha"        data-label="Alpha"></a>
     </nav>
 
-    <!-- thin gold line at top showing scroll progress -->
+    <!-- Scroll progress -->
     <div class="scroll-progress"><div class="scroll-progress__bar" id="scrollProgressBar"></div></div>
 
-    <!-- dark overlay on top of the background images -->
     <div class="bg-night-overlay"></div>
     <div class="gradient-bg"></div>
     <div class="gold-ambient" style="position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% 50%,rgba(201,168,76,0.03) 0%,transparent 80%);"></div>
 
-    <!-- navbar -->
+    <!-- Navbar -->
     <nav id="navbar">
         <div class="nav-container">
             <div class="logo-wrap">
@@ -105,7 +81,7 @@
         </div>
     </nav>
 
-    <!-- hero - the big landing area -->
+    <!-- Hero -->
     <section id="home" class="hero">
         <div class="hero-stars"></div>
         <div class="hero-content">
@@ -125,7 +101,7 @@
 
     <div class="section-divider"></div>
 
-    <!-- trailer -->
+    <!-- Trailer -->
     <section id="trailer">
         <div class="trailer-label">Official</div>
         <div class="chapter-eyebrow fade-in"><span>Official</span></div>
@@ -142,7 +118,7 @@
 
     <div class="section-divider"></div>
 
-    <!-- story section - 4 feature cards -->
+    <!-- Story -->
     <section id="story">
         <div class="chapter-eyebrow fade-in"><span>The Story</span></div>
         <h2 class="section-title">The Journey</h2>
@@ -179,7 +155,7 @@
         </div>
     </section>
 
-    <!-- faq section -->
+    <!-- FAQ -->
     <section id="faq">
         <div class="chapter-eyebrow fade-in"><span>Knowledge</span></div>
         <h2 class="section-title">Frequently Asked Questions</h2>
@@ -208,7 +184,7 @@
         </div>
     </section>
 
-    <!-- community section - discord, youtube, tiktok, patreon -->
+    <!-- Community -->
     <section id="community">
         <h2 class="section-title">Join Our Community</h2>
         <p class="section-subtitle">Connect with fellow enthusiasts and stay updated on our journey</p>
@@ -251,7 +227,7 @@
     <div class="section-divider"></div>
     <div class="ac-ornament"><span class="ac-ornament__line"></span><span class="ac-ornament__icon"></span><span class="ac-ornament__line"></span></div>
 
-    <!-- archive rail - horizontal scroll cards -->
+    <!-- Archive Rail -->
     <section id="archive-rail" class="ac-rail-section" aria-label="The Archive">
         <div class="ac-rail-header fade-in">
             <div>
@@ -312,13 +288,14 @@
         </div>
     </section>
 
-    <!-- team section -->
+    <!-- Team -->
     <section id="team">
         <div class="chapter-eyebrow fade-in"><span>The Team</span></div>
         <h2 class="section-title">Meet the Team</h2>
         <p class="section-subtitle">The passionate team crafting every detail of The Last Message</p>
 
         <div class="team-lead-card fade-in">
+            <div class="team-lead-stripe"></div>
             <div class="team-lead-avatar-wrap"><div class="team-lead-avatar">H</div></div>
             <div class="team-lead-content">
                 <div class="team-lead-badge">Lead Developer</div>
@@ -330,13 +307,13 @@
         <div class="team-contrib-label fade-in"><span class="tcl-line"></span><span class="tcl-text">Project Contributors</span><span class="tcl-line"></span></div>
 
         <div class="team-grid">
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">Z</div><div><h4 class="team-card-name">Zafar</h4><span class="team-role">Discord Admin</span></div></div><p>Discord admin who contributed to art, voice acting, server management, and assisted with various in-game tasks.</p></div>
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">S</div><div><h4 class="team-card-name">Stranger</h4><span class="team-role">3D Contributor</span></div></div><p>Contributed by creating 3D models and helping with different aspects of the game.</p></div>
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">N</div><div><h4 class="team-card-name">NsyCode</h4><span class="team-role">Developer</span></div></div><p>Developer who assisted with coding, bug fixing, and created the game launcher.</p></div>
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">A</div><div><h4 class="team-card-name">Amjad</h4><span class="team-role">3D Artist</span></div></div><p>Contributed to 3D modeling and helped fix various issues.</p></div>
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">E</div><div><h4 class="team-card-name">Envity</h4><span class="team-role">Bot Developer</span></div></div><p>Developed and managed Discord bots to support the community.</p></div>
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">Y</div><div><h4 class="team-card-name">yeswayswagg</h4><span class="team-role">Moderator</span></div></div><p>Discord moderator who helps manage the server and supports the project.</p></div>
-            <div class="team-card fade-in"><div class="team-card-top"><div class="team-card-avatar">A</div><div><h4 class="team-card-name">alen.akhi</h4><span class="team-role">Web Developer</span></div></div><p>Developer who created this website.</p></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">Z</div><div><h4 class="team-card-name">Zafar</h4><span class="team-role">Discord Admin</span></div></div><p>Discord admin who contributed to art, voice acting, server management, and assisted with various in-game tasks.</p></div></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">S</div><div><h4 class="team-card-name">Stranger</h4><span class="team-role">3D Contributor</span></div></div><p>Contributed by creating 3D models and helping with different aspects of the game.</p></div></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">N</div><div><h4 class="team-card-name">NsyCode</h4><span class="team-role">Developer</span></div></div><p>Developer who assisted with coding, bug fixing, and created the game launcher.</p></div></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">A</div><div><h4 class="team-card-name">Amjad</h4><span class="team-role">3D Artist</span></div></div><p>Contributed to 3D modeling and helped fix various issues.</p></div></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">E</div><div><h4 class="team-card-name">Envity</h4><span class="team-role">Bot Developer</span></div></div><p>Developed and managed Discord bots to support the community.</p></div></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">Y</div><div><h4 class="team-card-name">yeswayswagg</h4><span class="team-role">Moderator</span></div></div><p>Discord moderator who helps manage the server and supports the project.</p></div></div>
+            <div class="team-card fade-in"><div class="team-card-inner"><div class="team-card-top"><div class="team-card-avatar">A</div><div><h4 class="team-card-name">alen.akhi</h4><span class="team-role">Web Developer</span></div></div><p>Developer who created this website.</p></div></div>
         </div>
 
         <div class="fade-in" style="text-align:center;margin-top:3rem;">
@@ -349,31 +326,61 @@
     <div class="section-divider"></div>
     <div class="section-divider"></div>
 
-    <!-- alpha access section -->
-    <div id="alpha" class="alpha-access-wrap fade-in">
-        <div class="alpha-inner">
-            <span class="alpha-corner tl"></span><span class="alpha-corner tr"></span>
-            <span class="alpha-corner bl"></span><span class="alpha-corner br"></span>
+    <!-- Alpha -->
+    <section id="alpha" class="alpha-section fade-in">
+        <div class="alpha-chamber">
+            <span class="alpha-corner tl"></span>
+            <span class="alpha-corner tr"></span>
+            <span class="alpha-corner bl"></span>
+            <span class="alpha-corner br"></span>
+
+            <div class="alpha-ornament">
+                <span class="ao-line"></span>
+                <span class="ao-gem">&#9670;</span>
+                <span class="ao-gem">&#9670;</span>
+                <span class="ao-gem">&#9670;</span>
+                <span class="ao-line r"></span>
+            </div>
+
             <div class="alpha-badge">Alpha Version &middot; Now Available</div>
-            <div class="chapter-eyebrow fade-in"><span>Early Access</span></div>
-            <h2 class="alpha-title">Try the Alpha</h2>
+            <h2 class="alpha-title">TRY THE ALPHA</h2>
+            <p class="alpha-sub">Early Access Program</p>
+
+            <div class="alpha-ornament" style="margin:1.2rem auto 1.8rem;">
+                <span class="ao-line"></span>
+                <span class="ao-gem">&#9670;</span>
+                <span class="ao-line r"></span>
+            </div>
+
             <p class="alpha-desc">The Last Message is currently in Alpha. If you're passionate about the project and want to be one of the first to experience it, head over to our Discord and ask the developers directly &mdash; we hand out access to dedicated community members who are genuinely excited about what we're building.</p>
+
+            <div class="alpha-timeline">
+                <div class="alpha-tl-step">
+                    <div class="alpha-tl-num">01</div>
+                    <div class="alpha-tl-label">Join the<br>Discord</div>
+                </div>
+                <div class="alpha-tl-conn"></div>
+                <div class="alpha-tl-step">
+                    <div class="alpha-tl-num">02</div>
+                    <div class="alpha-tl-label">Ask the<br>Developers</div>
+                </div>
+                <div class="alpha-tl-conn"></div>
+                <div class="alpha-tl-step">
+                    <div class="alpha-tl-num">03</div>
+                    <div class="alpha-tl-label">Get<br>Access</div>
+                </div>
+            </div>
+
             <div class="alpha-btn-wrap">
                 <a href="https://discord.gg/J5Bp77Zwpu" class="btn-mirage btn-quest" target="_blank" rel="noopener noreferrer">
                     <span>Join Discord</span>
                     <span class="bm-sub">Request Alpha Access</span>
                 </a>
             </div>
-            <!-- steps sit right below the button, horizontal row -->
-            <div class="alpha-steps">
-                <div class="alpha-step"><span class="alpha-step-num">1</span><span class="alpha-step-label">Join the Discord</span></div>
-                <div class="alpha-step-connector"></div>
-                <div class="alpha-step"><span class="alpha-step-num">2</span><span class="alpha-step-label">Ask the Developers</span></div>
-            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- footer -->
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-links">
@@ -392,7 +399,7 @@
         </div>
     </footer>
 
-    <!-- codex overlay popup -->
+    <!-- Codex Overlay -->
     <div id="codexOverlay" class="codex-overlay" role="dialog" aria-modal="true" aria-label="Historical Codex">
         <div class="codex-panel">
             <button class="codex-close-btn" onclick="closeCodex()" aria-label="Close Codex">&times;</button>
@@ -438,7 +445,7 @@
         </div>
     </div>
 
-    <!-- devlogs overlay popup -->
+    <!-- Devlogs Overlay -->
     <div id="devlogsOverlay" class="codex-overlay" role="dialog" aria-modal="true" aria-label="Developer Logs">
         <div class="codex-panel" style="max-width:860px;">
             <button class="codex-close-btn" onclick="closeDevlogs()" aria-label="Close Developer Logs">&times;</button>
@@ -463,25 +470,15 @@
                     <div class="devlog-card-body"><span class="devlog-card-type">Dev Note</span><div class="devlog-card-title">Alpha Dev Note</div><p class="devlog-card-desc">An important developer note regarding the Alpha phase &mdash; sharing insights on the current state of the game and the road ahead.</p><a href="https://www.patreon.com/posts/dev-note-alpha-152999843" class="devlog-open-link" target="_blank" rel="noopener noreferrer">Read on Patreon</a></div>
                 </div>
                 <div class="devlog-card">
-                    <div class="devlog-img-wrap"><img src="https://files.catbox.moe/01b0ls.png" alt="Revelation Logs #04" loading="lazy" decoding="async"><span class="devlog-num-badge">Log #04</span></div>
+                    <div class="devlog-img-wrap"><img src="https://files.catbox.moe/01b0ls.png" alt="Revelation Logs" loading="lazy" decoding="async"><span class="devlog-num-badge">Log #04</span></div>
                     <div class="devlog-card-body"><span class="devlog-card-type">Revelation Logs</span><div class="devlog-card-title">Level Design &amp; Story Progress</div><p class="devlog-card-desc">A deep dive into level design decisions and major story milestones &mdash; covering new environments, quest structures, and narrative developments in the latest build.</p><a href="https://www.patreon.com/posts/revelation-logs-157079855" class="devlog-open-link" target="_blank" rel="noopener noreferrer">Read on Patreon</a></div>
                 </div>
             </div>
         </div>
     </div>
 
-</div><!-- end site-wrap -->
+</div><!-- /#site-wrap -->
 
-<!-- scripts loaded at the bottom in order -->
-<script src="js/loader.js"></script>
-<script src="js/navbar.js"></script>
-<script src="js/faq.js"></script>
-<script src="js/scroll.js"></script>
-<script src="js/slideshow.js"></script>
-<script src="js/overlays.js"></script>
-<script src="js/archive.js"></script>
-<script src="js/hud.js"></script>
-<script src="js/cursor.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
-
